@@ -201,11 +201,8 @@ router.get("/getPendingCall", async (req, res) => {
     const allcallitem = await callStatus.find({
       userId: userId,
       callReq: false,
-    });
-    const doc= await Doctor.findById(allcallitem[0].doctorid)
-    console.log( "doctor is ",doc)
-    // console.log("data is",allcallitem[0].doctorid)
-    res.status(200).send({allcallitem,doc});
+    }).populate('doctorid');
+    res.status(200).send(allcallitem);
   } catch (error) {
     console.log(error);
   }
@@ -238,8 +235,7 @@ router.get("/getCompletedCall", async (req, res) => {
 // Doctor Pending Calls
 router.get("/doc-pending-calls/:id", async (req, res) => {
   try {
-    const data = await callStatus.find({ docId: req.params.id });
-    console.log(data);
+    const data = await callStatus.find({ docId: req.params.id }).populate('userId');
     res.status(200).send(data);
   } catch (error) {
     console.log(error);
