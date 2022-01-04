@@ -7,18 +7,21 @@ var UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    // unique: true
   },
   mobno: {
     type: Number,
-    // required:true,
-    // unique: true,
   },
   password: {
     type: String,
   },
   address: {
     type: String,
+  },
+  latitude:{
+    type:String
+  },
+  longitude:{
+    type:String
   },
   expertise: {
     type: String,

@@ -184,7 +184,7 @@ router.get("/doctor/:expertise", async (req, res) => {
 });
 
 //Add Call Stataus
-router.post("/addCall", jwtrequire, async (req, res) => {
+router.post("/addCall", async (req, res) => {
   try {
     //req.body is equal model of callStatus
     const addCall = await callStatus.create({ ...req.body });
@@ -200,23 +200,15 @@ router.get("/getPendingCall", async (req, res) => {
     const userId = req.body.userId;
     const allcallitem = await callStatus.find({
       userId: userId,
-      status: "pending",
+      callReq: false,
     });
-    res.status(200).send(allcallitem);
+    const doc= await Doctor.findById(allcallitem[0].doctorid)
+    console.log( "doctor is ",doc)
+    // console.log("data is",allcallitem[0].doctorid)
+    res.status(200).send({allcallitem,doc});
   } catch (error) {
     console.log(error);
   }
-});
-
-//Set Pending Call
-router.post("/setPendingCall", async (req, res) => {
-  //req.body.id is equal callStatus id
-  const pendingcall = await CallStatus.findOneAndUpdate(
-    { _id: req.body.id },
-    { $set: { status: "pending" } },
-    { new: true }
-  );
-  res.status(200).json(pendingcall);
 });
 
 //Set Completed Call
@@ -224,7 +216,7 @@ router.post("/setCompletedCall", async (req, res) => {
   //req.body.id is equal callStatus id
   const completedcall = await CallStatus.findOneAndUpdate(
     { _id: req.body.id },
-    { $set: { status: "compeleted" } },
+    { $set: { completedCall: true } },
     { new: true }
   );
   res.status(200).json(completedcall);
@@ -254,26 +246,37 @@ router.get("/doc-pending-calls/:id", async (req, res) => {
   }
 });
 // Doctor Completed Calls
-router.get("/doc-pending-calls/:id", async (req, res) => {
+router.get("/doc-pending-calls/:docid", async (req, res) => {
   try {
-    const data = await callStatus.find({ docId: req.params.id });
+    const data = await callStatus.find({ docId: req.params.docid });
     res.status(200).send(data);
   } catch (error) {
     console.log(error);
   }
 });
 // Doctor request Calls Accept/Decline
-router.get("/doc-accept-call/:id", async (req, res) => {
+router.get("/doc-accept-call/:callid", async (req, res) => {
   try {
-    await callStatus.findByIdAndUpdate(req.params.id, {
+    await callStatus.findByIdAndUpdate(req.params.callid, {
       callReq: true,
+      completedCall:true
     });
     res.status(200).send({ msg: "Call Request Accepted" });
   } catch (error) {
     console.log(error);
   }
 });
-
+// Doctor reject CAll
+router.get("/doc-reject-call/:callid", async (req, res) => {
+  try {
+    await callStatus.findByIdAndUpdate(req.params.callid, {
+      rejectCall:true
+    });
+    res.status(200).send({ msg: "Call Request Accepted" });
+  } catch (error) {
+    console.log(error);
+  }
+});
 //Add Specialization Category Name
 router.post("/addSpecialization", async (req, res) => {
   try {

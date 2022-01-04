@@ -45,6 +45,9 @@ var UserSchema = new mongoose.Schema({
         type:String,
     },
     token: { type: String },
+	profilepic:{
+		type:String
+	}
 	
 },
 	{
