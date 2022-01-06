@@ -208,23 +208,12 @@ router.get("/getPendingCall/:userid", async (req, res) => {
   }
 });
 
-//Set Completed Call
-router.post("/setCompletedCall", async (req, res) => {
-  //req.body.id is equal callStatus id
-  const completedcall = await CallStatus.findOneAndUpdate(
-    { _id: req.body.id },
-    { $set: { completedCall: true } },
-    { new: true }
-  );
-  res.status(200).json(completedcall);
-});
-
 //Get Compeleted Call Status
-router.get("/getCompletedCall", async (req, res) => {
+router.get("/getCompletedCall/:userid", async (req, res) => {
   try {
-    const userId = req.body.userId;
+    const userId = req.body.userid;
     const allcallitem = await callStatus.find({
-      uuserId: userId,
+      userId: userId,
       status: "completed",
     });
     res.status(200).send(allcallitem);
