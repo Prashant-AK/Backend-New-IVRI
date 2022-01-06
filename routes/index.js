@@ -233,18 +233,18 @@ router.get("/getCompletedCall", async (req, res) => {
   }
 });
 // Doctor Pending Calls
-router.get("/doc-pending-calls/:id", async (req, res) => {
+router.get("/doc-pending-calls/:docid", async (req, res) => {
   try {
-    const data = await callStatus.find({ docId: req.params.id }).populate('userId');
+    const data = await callStatus.find({ docId: req.params.docid }).populate('userId');
     res.status(200).send(data);
   } catch (error) {
     console.log(error);
   }
 });
 // Doctor Completed Calls
-router.get("/doc-pending-calls/:docid", async (req, res) => {
+router.get("/doc-completed-calls/:docid", async (req, res) => {
   try {
-    const data = await callStatus.find({ docId: req.params.docid });
+    const data = await callStatus.find({ docId: req.params.docid,completedCall:true }).populate('userId');;
     res.status(200).send(data);
   } catch (error) {
     console.log(error);
