@@ -195,9 +195,9 @@ router.post("/addCall", async (req, res) => {
 });
 
 //Get Pending Call Status
-router.get("/getPendingCall", async (req, res) => {
+router.get("/getPendingCall/:userid", async (req, res) => {
   try {
-    const userId = req.body.userId;
+    const userId = req.params.userid;
     const allcallitem = await callStatus.find({
       userId: userId,
       callReq: false,
