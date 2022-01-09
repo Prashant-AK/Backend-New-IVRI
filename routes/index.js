@@ -144,7 +144,6 @@ router.post("/doctorlogin", async (req, res) => {
     }
     // Validate if user exist in our database
     const doctor = await Doctor.findOne({ email });
-console.log(doctor)
     if (doctor && (await bcrypt.compare(password, doctor.password))) {
       // Create token
       const token = jwt.sign(
@@ -158,14 +157,15 @@ console.log(doctor)
       doctor.token = token;
       res.status(200).json(doctor);
     }
-    res.status(400).send("Invalid Credentials");
+    else{ res.status(400).send("Invalid Credentials");}
+    
   } catch (err) {
     console.log(err);
   }
 });
 
 // get doctor list from the database and also check the user should be login
-router.get("/doctor", async (req, res) => {
+router.get("/doctor",async (req, res) => {
   try {
     const data = await Doctor.find();
     res.status(200).send(data);
