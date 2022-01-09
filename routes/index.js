@@ -115,12 +115,12 @@ router.post("/create-doctor", async (req, res) => {
       email: email.toLowerCase(),
       mobno,
       expertise,
-      encryptedPassword,
+      password:encryptedPassword,
     });
 
     // Create token
     const token = jwt.sign(
-      { user_id: doctor._id, email },
+      { user_id: doc._id, email },
       process.env.JWT_SECRET,
       {
         expiresIn: "2h",
@@ -144,8 +144,8 @@ router.post("/doctorlogin", async (req, res) => {
     }
     // Validate if user exist in our database
     const doctor = await Doctor.findOne({ email });
-
-    if (doctor && (await bcrypt.compare(password, user.password))) {
+console.log(doctor)
+    if (doctor && (await bcrypt.compare(password, doctor.password))) {
       // Create token
       const token = jwt.sign(
         { user_id: doctor._id, email },
