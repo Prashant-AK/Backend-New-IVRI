@@ -26,6 +26,9 @@ var UserSchema = new mongoose.Schema({
   expertise: {
     type: String,
   },
+  token:{
+    type:String
+  }
 });
 
 module.exports = mongoose.model("doctors", UserSchema);
