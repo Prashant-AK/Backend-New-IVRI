@@ -2,7 +2,6 @@ var express = require("express");
 var router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const auth = require("../middlewares/jwt");
 const User = require("../models/UserModel");
 const Doctor = require("../models/DoctorModel");
 const callStatus = require("../models/callStatus");
@@ -201,6 +200,7 @@ router.get("/getPendingCall/:userid", async (req, res) => {
     const allcallitem = await callStatus.find({
       userId: userId,
       callReq: false,
+      rejectCall:false
     }).populate('doctorid');
     res.status(200).send(allcallitem);
   } catch (error) {
@@ -224,7 +224,7 @@ router.get("/getCompletedCall/:userid", async (req, res) => {
 // Doctor Pending Calls
 router.get("/doc-pending-calls/:docid", async (req, res) => {
   try {
-    const data = await callStatus.find({ docId: req.params.docid }).populate('userId');
+    const data = await callStatus.find({ doctorid: req.params.docid,callReq: false,rejectCall:false }).populate('userId');
     res.status(200).send(data);
   } catch (error) {
     console.log(error);
@@ -233,7 +233,7 @@ router.get("/doc-pending-calls/:docid", async (req, res) => {
 // Doctor Completed Calls
 router.get("/doc-completed-calls/:docid", async (req, res) => {
   try {
-    const data = await callStatus.find({ docId: req.params.docid,completedCall:true }).populate('userId');;
+    const data = await callStatus.find({ doctorid: req.params.docid,completedCall:true,rejectCall:false }).populate('userId');
     res.status(200).send(data);
   } catch (error) {
     console.log(error);

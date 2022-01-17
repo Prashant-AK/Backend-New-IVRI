@@ -6,10 +6,10 @@ const problemSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  species:{
-    type:String,
-  },
-  problemDetails: [{ type: ObjectId, ref: "problemdetails" }],
+  speciesId:{ type: ObjectId,
+     ref: "species"
+     },
+    problemDetails: { type: Array},
 });
 
 module.exports = mongoose.model("problems", problemSchema);
