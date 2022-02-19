@@ -2,9 +2,11 @@ const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema.Types;
 const problemDetailSchema = new mongoose.Schema({
   problemDetail: {
-    type: String,
-    required: true,
+    type:Array,
   },
+  speciesId:{ type: ObjectId,
+    ref: "species"
+    },
   problemid:{
     type: ObjectId,
     ref: "problems",

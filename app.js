@@ -5,9 +5,6 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 require("dotenv").config();
 var cors = require("cors");
-var Species = require("./models/species");
-var Problem = require("./models/problem");
-var ProblemDetail = require("./models/problemdetail");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 
@@ -55,40 +52,7 @@ app.use("/users", usersRouter);
 // form APIs
 app.use("/add", require("./controller/addDetails"));
 
-// for selecting species
-app.get("/species", (req, res) => {
-  Species.find().then((specie) => res.json(specie));
-});
 
-// for searching species
-app.get("/species/:specific", (req, res) => {
-  Species.find({ species: req.params.specific }).then((specie) =>
-    res.json(specie)
-  );
-});
-
-// for selecting problems
-app.get("/problem/:specific", (req, res) => {
-  Problem.find().then((problem) => res.json(problem));
-});
-// for searching problems
-app.get("/problem/:specific", (req, res) => {
-  Problem.find({ problem: req.params.specific }).then((problem) =>
-    res.json(problem)
-  );
-});
-
-// for selecting problemDetail
-app.get("/problemDetail/:specific", (req, res) => {
-  ProblemDetail.find().then((problemDetail) => res.json(problemDetail));
-});
-
-// for searching problemDetail
-app.get("/problemDetail/:specific", (req, res) => {
-  ProblemDetail.find({ _id: req.params.specific }).then((problemDetail) =>
-    res.json(problemDetail)
-  );
-});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

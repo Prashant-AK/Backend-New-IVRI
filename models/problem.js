@@ -8,8 +8,7 @@ const problemSchema = new mongoose.Schema({
   },
   speciesId:{ type: ObjectId,
      ref: "species"
-     },
-    problemDetails: { type: Array},
+     }
 });
 
 module.exports = mongoose.model("problems", problemSchema);

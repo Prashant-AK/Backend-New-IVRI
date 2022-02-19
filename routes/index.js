@@ -7,7 +7,9 @@ const Doctor = require("../models/DoctorModel");
 const callStatus = require("../models/callStatus");
 const Specialization = require("../models/specializationCategory");
 const jwtrequire = require("../middlewares/jwt");
-
+var Species = require("../models/species");
+var Problem = require("../models/problem");
+var ProblemDetail = require('../models/problemdetail')
 // REGISTER USER
 router.post("/register", async (req, res) => {
   try {
@@ -282,5 +284,44 @@ router.get("/getSpecialization", async (req, res) => {
     console.log(error);
   }
 });
+
+
+// for selecting species
+router.get("/species", (req, res) => {
+  Species.find().then((specie) => res.json(specie));
+});
+
+// for searching species
+router.get("/species/:specific", (req, res) => {
+  Species.find({ species: req.params.specific }).then((specie) =>
+    res.json(specie)
+  );
+});
+
+// for selecting problems
+router.get("/problem/:specieid", (req, res) => {
+  Problem.find({speciesId:req.params.specieid}).then((problem) => res.json(problem));
+});
+// for searching problems
+// router.get("/problem/:specific", (req, res) => {
+//   Problem.find({ problem: req.params.specific }).then((problem) =>
+//     res.json(problem)
+//   );
+// });
+
+// for selecting problemDetail
+router.get("/problemDetail/:speciesId/:problemid", (req, res) => {
+  console.log(req.params.speciesId,req.params.problemid)
+  const {speciesId,problemid}=req.params
+  ProblemDetail.find(
+    {speciesId,problemid}).then((problem_detail) => res.json(problem_detail));
+});
+
+// for searching problemDetail
+// router.get("/problemDetail/:specific", (req, res) => {
+//   ProblemDetail.find({ _id: req.params.specific }).then((problemDetail) =>
+//     res.json(problemDetail)
+//   );
+// });
 
 module.exports = router;
